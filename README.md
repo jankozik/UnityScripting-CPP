@@ -1,4 +1,4 @@
-# Unity Native Scripting
+# Unity Scripting To Native code
 
 A library to allow writing Unity scripts in native code: C, C++, assembly.
 
@@ -24,13 +24,11 @@ By using C++, we can compile the game as a C++ plugin in about 1 second, swap th
 
 ## Fast Compile Times
 
-C++ [compiles much more quickly](https://github.com/jacksondunstan/cscppcompiletimes) than C#. Incremental builds when just one file changes-- the most common builds-- can be 15x faster than with C#. Faster compilation adds up over time to productivity gains. Quicker iteration times make it easier to stay in the "flow" of programming.
+C++ [compiles much more quickly](https://github.com/jankozik/cscppcompiletimes) than C#. Incremental builds when just one file changes-- the most common builds-- can be 15x faster than with C#. Faster compilation adds up over time to productivity gains. Quicker iteration times make it easier to stay in the "flow" of programming.
 
 ## No Garbage Collector
 
 Unity's garbage collector is mandatory and has a lot of problems. It's slow, runs on the main thread, collects all garbage at once, fragments the heap, and never shrinks the heap. So your game will experience "frame hitches" and eventually you'll run out of memory and crash.
-
-A significant amount of effort is required to work around the GC and the resulting code is difficult to maintain and slow. This includes techniques like [object pools](https://jacksondunstan.com/articles/3829), which essentially make memory management manual. You've also got to avoid boxing value types like `int` to to managed types like `object`, not use `foreach` loops in some situations, and various other [gotchas](https://jacksondunstan.com/articles/3850).
 
 C++ has no required garbage collector and features optional automatic memory management via "smart pointer" types like [shared_ptr](http://en.cppreference.com/w/cpp/memory/shared_ptr). It offers excellent alternatives to Unity's primitive garbage collector.
 
@@ -38,7 +36,7 @@ While using some .NET APIs will still involve garbage creation, the problem is c
 
 ## Total Control
 
-By using C++ directly, you gain complete control over the code the CPU will execute. It's much easier to generate optimal code with a C++ compiler than with a C# compiler, IL2CPP, and finally a C++ compiler. Cut out the middle-man and you can take advantage of compiler intrinsics or assembly to directly write machine code using powerful CPU features like [SIMD](https://jacksondunstan.com/articles/3890) and hardware AES encryption for massive performance gains.
+By using C++ directly, you gain complete control over the code the CPU will execute. It's much easier to generate optimal code with a C++ compiler than with a C# compiler, IL2CPP, and finally a C++ compiler. Cut out the middle-man and you can take advantage of compiler intrinsics or assembly to directly write machine code using powerful CPU features like SIMD and hardware AES encryption for massive performance gains.
 
 ## More Features
 
@@ -54,7 +52,7 @@ C++ is a much larger language than C# and some developers will prefer having mor
 
 ## No IL2CPP Surprises
 
-While IL2CPP transforms C# into C++ already, it generates a lot of overhead. There are many [surprises](https://jacksondunstan.com/articles/3916) if you read through the generated C++. For example, there's overhead for any function using a static variable and an extra two pointers are stored at the beginning of every class. The same goes for all sorts of features such as `sizeof()`, mandatory null checks, and so forth. Instead, you could write C++ directly and not need to work around IL2CPP.
+While IL2CPP transforms C# into C++ already, it generates a lot of overhead. There are many surprises if you read through the generated C++. For example, there's overhead for any function using a static variable and an extra two pointers are stored at the beginning of every class. The same goes for all sorts of features such as `sizeof()`, mandatory null checks, and so forth. Instead, you could write C++ directly and not need to work around IL2CPP.
 
 ## Industry Standard Language
 
@@ -132,10 +130,6 @@ To run the code generator, choose `NativeScript > Generate Bindings` from the Un
 # Performance
 
 Almost all projects will see a net performance win by reducing garbage collection, eliminating IL2CPP overhead, and access to compiler intrinsics and assembly. Calls from C++ into C# incur only a minor performance penalty. In the rare case that almost all of your code is calls to .NET APIs then you may experience a net performance loss.
-
-[Testing and benchmarks article](https://jacksondunstan.com/articles/3952)
-
-[Optimizations article](https://jacksondunstan.com/articles/4311)
 
 # Project Structure
 
@@ -219,18 +213,6 @@ With C++, the workflow looks like this:
 # Updating To A New Version
 
 To update to a new version of this project, overwrite your Unity project's `Assets/NativeScript` directory with this project's `Unity/Assets/NativeScript` directory and re-run the code generator.
-
-# Reference
-
-[Articles](https://jacksondunstan.com/articles/3938) by the author describing the development of this project.
-
-# Author
-
-[Jackson Dunstan](https://jacksondunstan.com)
-
-# Contributing
-
-Please feel free to fork and send [pull requests](https://github.com/jacksondunstan/UnityNativeScripting/pulls) or simply submit an [issue](https://github.com/jacksondunstan/UnityNativeScripting/issues) for features or bug fixes.
 
 # License
 
